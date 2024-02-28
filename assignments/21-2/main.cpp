@@ -4,7 +4,7 @@
  * Email:   stephanielh1111@gmail.com
  * @date    02/29/24
  * CS21:    Assignment#2
- * Status:  Working/untested
+ * Status:  Working/tested
  *
  * Demonstrates functionality of the int_min_heap class
 */
@@ -32,11 +32,16 @@ int main() {
                 // call heapsort, and then print, on a single line, as a comma-separated list the 
                 // sorted array returned from heapsort.
                 std::pair<int *, int> sorted_pair = heap.heapsort();
+                
                 std::cout << "sorted array: [";
-                for (int i = 0; i < sorted_pair.second - 1; i++) {
-                    std:: cout << sorted_pair.first[i] << ", ";
+                if (sorted_pair.second > 0)  {
+                    for (int i = 0; i < sorted_pair.second - 1; i++) {
+                        std:: cout << sorted_pair.first[i] << ", ";
+                    }
+                    std::cout << sorted_pair.first[sorted_pair.second - 1];
                 }
-                std::cout << sorted_pair.first[sorted_pair.second - 1] << "]" << std::endl;
+                std::cout << "]" << std::endl;
+
                 delete [] sorted_pair.first;
                 break;
             }
