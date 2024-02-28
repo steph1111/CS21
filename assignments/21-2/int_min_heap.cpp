@@ -5,8 +5,8 @@
  * @date    02/29/24
  * CS21:    Assignment#2
  *
- * Definitions of methods of intMinHeap class. The intMinHeap class defines a 
- * minimum priority heap (queue)
+ * Definitions of methods of intMinHeap class. The intMinHeap class 
+ * defines a minimum priority heap (queue)
 */
 
 
@@ -93,7 +93,7 @@ bool intMinHeap::heapinsert(int val) {
     if (this->isFull()) return false;
 
     this->size++;                       // Increase size
-    A[size - 1] = val + 1;              // Add one so the old value in decrease key works
+    A[size - 1] = val + 1;              // Add one so decrease key works
     this->decreasekey(size - 1, val);   // Moves to correct position
 
     return true;
@@ -128,7 +128,7 @@ int intMinHeap::extractmin() {
 */
 void intMinHeap::decreasekey(int i, int k) {
     // Bounds check
-    if (this->isEmpty() || i < 0 || i >= this->size || this->A[i] <= k) return;
+    if (i < 0 || i >= this->size || this->A[i] <= k) return;
     A[i] = k; // Promote to k (key) value
     // Move value to the right spot
     while (i > 0 && this->A[this->parent(i)] > this->A[i]) {
