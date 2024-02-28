@@ -22,7 +22,7 @@ class intMinHeap{
    * 
    * @param cap Capacity of intMinHeap
   */
-  intMinHeap(int);
+  intMinHeap(int cap);
 
   /**
    * Destructor for intMinHeap object, clean up allocated memory 
@@ -50,7 +50,7 @@ class intMinHeap{
    * @param val Value to insert
    * @return True if the insert worked, other false if not
   */
-  bool heapinsert(int); // add element to heap; return success
+  bool heapinsert(int val);
 
   /**
    * Returns the minimum value in the heap, A[root].
@@ -132,7 +132,7 @@ class intMinHeap{
   /**
    * Converts an array to a integer minimum heap
   */
-  void buildheap();  // convert array to a heap
+  void buildheap();
   
   /**
    * Preserve the heap property A[i] >= A[parent(i)]
