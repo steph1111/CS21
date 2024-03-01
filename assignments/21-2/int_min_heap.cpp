@@ -175,7 +175,7 @@ int intMinHeap::minOf3(int i, int j, int k) {
     if (j >= this->size || j < 0) j = i;
     if (k >= this->size || k < 0) k = i;
     int min_index_i_j = this->A[i] < this->A[j] ? i : j;
-    return this->A[min_index_i_j] < this->A[k] ? min_index_i_j : k;
+    return this->A[min_index_i_j] <= this->A[k] ? min_index_i_j : k;
 }
 
 /**
