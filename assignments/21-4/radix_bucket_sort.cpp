@@ -7,14 +7,13 @@
  * Status:  Working/tested
  *
  * Takes an unspecified number of numeric inputs and sorts them
- * using radix bucket hybrid sort. The sorted numbers are then outputted with
- * leading padded zeros to nine total digits.
+ * using radix bucket hybrid sort. The sorted numbers are then 
+ * outputted with leading padded zeros to nine total digits.
 */
-
-#include <iostream>
-#include <vector>
 #include <cmath>
 #include <iomanip>
+#include <iostream>
+#include <vector>
 
 /**
  * Outputs a number with leading padding zeros to nine digits.
@@ -22,7 +21,8 @@
  * @param num Number to output.
 */
 inline void format_cout(int num) {
-    std::cout << std::right << std::setw(9) << std::setfill('0') << num << std::endl;
+    std::cout << std::right << std::setw(9) 
+              << std::setfill('0') << num << std::endl;
 }
 
 /**
@@ -39,28 +39,28 @@ inline int _get_digit(int num, int i) {
 /**
  * @param A The vector to sort
  * @param d Number of digits in the numbers to sort (defaults to 9)
- * @param k Base of the number system (defaults to 10)
 */
-void radix_bucket_sort(std::vector<int>& A, int d = 9, int k = 10) {
-    std::vector<int>* bucket = new std::vector<int>[k]; // k buckets, each bucket is a vector. One bucket for each possible number
-    int n = A.size(), r;
+void radix_bucket_sort(std::vector<int>& A, int d = 9) {
+    const int k = 10;
+    int r, index;
+    std::vector<int> bucket[k];
+    int n = A.size();
 
-    for(int i = 1; i <= d; i++) {           // Iterate from least significant digit to most significant digit (position in the number)
+    for(int i = 1; i <= d; i++) {           // From LSD to MSD
         for(int j = 0; j < n; j++) {        // For each number in the vector
-            r = _get_digit(A[j], i);        // i-th digit from the current number in the vector
-            bucket[r].push_back(A[j]);      // Add entire number to correct bucket based on number at the ith digit
+            r = _get_digit(A[j], i);        // i-th digit
+            bucket[r].push_back(A[j]);      // Add number to ith-bucket
         }
-        // Numbers are in correct buckers, put them back in FIFO order
-        int index = 0;
-        for(int j = 0; j < k; j++) {        // For each bucket
-            for (int item : bucket[j]) {    // For each item in each bucket
-                A[index] = item;            // Put items back into `A` in FIFO order
+        // Put numbers back in FIFO order
+        index = 0;
+        for(int j = 0; j < k; j++) {
+            for (unsigned l = 0; l < bucket[j].size(); l++) {
+                A[index] = bucket[j][l];
                 index++;
             }
-            bucket[j].clear();              // Clear bucket contents for next iteration
+            bucket[j].clear();
         }
     }
-    delete[] bucket;
 }
 
 int main() {
@@ -73,8 +73,8 @@ int main() {
 
     radix_bucket_sort(numbers);
 
-    for (int number: numbers) {
-        format_cout(number);
+    for (unsigned i = 0; i < numbers.size(); i++) {
+        format_cout(numbers[i]);
     }
 
     return 0;

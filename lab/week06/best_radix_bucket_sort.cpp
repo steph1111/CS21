@@ -85,6 +85,11 @@ int main() {
     std::vector<int> numbers(LEN);
     int sign[2] = {-1, 1};
 
+
+    // while (std::cin >> input) {
+    //     numbers.push_back(input);
+    // }
+
     for (int i = 0; i < LEN; i++) {numbers[i] = rand() % LEN * sign[rand() % 2];}
 
     radix_bucket_sort(numbers);
