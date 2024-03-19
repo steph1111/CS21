@@ -53,10 +53,22 @@ std::string pop_back() {
 ### Pop front
 ```cpp
 std::string pop_front() {
-    if (!this->size_) {
-        throw std::domain_error("List is empty");
+    if (!this->size) {  // Size is zero (the list is empty)
+        throw std::domain_error("Empty list");
     }
 
+    Node* old_head = this->head;
+    std::string old_data = this->head->data;
+    if (this->size == 1) {  // Size is zero
+        // With no remaining elements in the list, head and tail both point to null
+        this->head = this->tail = nullptr;
+    } else {  // Size is greater than one
+        this->head = this->head->next;
+        this->head->prev = nullptr;
+    }
+    this->size--;
+    delete old_head;
+    return old_data;
 }
 ```
 
@@ -64,12 +76,12 @@ std::string pop_front() {
 ```cpp
 std::string push_back(std::string val) {
     Node* new_node = new Node{val};
-    if (this->size_) {
-        new_node->prev = this->tail;
+    if (this->size) {  // Size is greater than zero
         this->tail->next = new_node;
+        new_node->prev = this->tail;
         this->tail = new_node;
-    } else {
-        this->head = this->tail = new_node;
+    } else {  // Size is zero
+        this->head = this->tail = new_node;  // Both head and tail are the new node
     }
     this->size++;
     return val;
@@ -79,13 +91,13 @@ std::string push_back(std::string val) {
 ### Push front
 ```cpp
 std::string push_front(std::string val) {
-    Node* new_node = new Node{val};
-    if (this->size_) {
-        new_node->next = this->head;
+    Node* new_node = new LinkNode{val};
+    if (this->size) {  // Size is greater than zero
         this->head->prev = new_node;
+        new_node->next = this->head;
         this->head = new_node;
-    } else {
-        this->head = this->tail = new_node;
+    } else {  // Size is zero
+        this->head = this->tail = new_node;  // Both head and tail are the new node
     }
     this->size++;
     return val;
@@ -125,7 +137,7 @@ std::pair<int *, int> intMinHeap::heapsort() {
 }
 ```
 
-## Heap insert
+### Heap insert
 **Order:** $O(lgn)$ 
 
 Inserts a value into the heap. Increases the size then appends the new element (-1 so we can use decrease key) to the end. Moves it to the correct position using `decrease_key()`.
@@ -141,7 +153,7 @@ bool intMinHeap::heapinsert(int val) {
 }
 ```
 
-## Minimum
+### Minimum
 **Order:** $O(1)$ 
 
 Returns the minimum of a heap, This will always be at `A[root]`
@@ -151,7 +163,7 @@ int minimum() {
 }
 ```
 
-## Extract min
+### Extract min
 **Order:** $O(lgn)$ 
 
 ```cpp
@@ -165,7 +177,7 @@ int extract_min() {
 }
 ```
 
-## Decrease key
+### Decrease key
 **Order:** $O(lgn)$ 
 
 ```cpp
@@ -180,7 +192,7 @@ void intMinHeap::decreasekey(int i, int k) {
     }
 }
 ```
-## Min of three
+### Min of three
 ```cpp
 int intMinHeap::minOf3(int i, int j, int k) {
     if (j >= this->size) j = i;
@@ -210,7 +222,7 @@ int partition(std::vector<int>& A, int p, int r) {
     // for vectors larger than LIMIT
     if ((r - p) > LIMIT) {
         int med = med_of_3(A, p, r);
-        swap(med, r);
+        swap(A, med, r);
     }
 
     int x = A[r];                   // Pivot element
@@ -218,10 +230,10 @@ int partition(std::vector<int>& A, int p, int r) {
     for (int j = p; j < r; j++) {   // For every element besides the pivot
         if (A[j] < x) {             // If the element belongs on the low side
             i++;                    // Increment low position
-            swap(i, j);          // Put that element on the low side
+            swap(A, i, j);          // Put that element on the low side
         }
     }
-    swap(i + 1, r);      // Move the pivot to its new position
+    swap(A, i + 1, r);      // Move the pivot to its new position
 
     // New pivot index aka where the array is split into high and low
     return i + 1;
@@ -245,11 +257,10 @@ int mo3(std::vector<int>& A, int p, int r) {
 **Order:** $O(n)$ 
 
 ```cpp
-void radix_bucket_sort(std::vector<int>& A, int d = 9) {
-    const int k = 10;
+void radix_bucket_sort(std::vector<int>& A) {
+    int d = 9, k = 10, n = A.size();
     int r, index;
     std::vector<int> bucket[k];
-    int n = A.size();
 
     for(int i = 1; i <= d; i++) {           // From LSD to MSD
         for(int j = 0; j < n; j++) {        // For each number in the vector
@@ -275,3 +286,4 @@ int _get_digit(int num, int i) {
 ```
 
 ## Hash table
+
