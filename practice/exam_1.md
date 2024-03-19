@@ -1,3 +1,97 @@
+# Exam one study guide
+## Linked List
+### Private variables
+```cpp
+private:
+struct Node {
+    std::string data;
+    Node* next = nullptr;
+    Node* prev = nullptr;
+};
+Node* head;
+Node* tail;
+int size_ = 0;
+```
+
+### Destructor
+```cpp 
+~LinkedList() {
+    while (this->head) {
+        LinkNode* old_head = this->head;
+        this->head = old_head->next;
+        delete old_head;
+    }
+}
+```
+
+### Pop back
+```cpp
+std::string pop_back() {
+    // Make sure there is elements in the list
+    if (!this->size_) {
+        throw std::domain_error("Empty list");
+    }
+    Node* old_tail = this->tail;
+    std::string old_data = this->tail->data;
+    if (this->size == 1) {
+        // If the size is one, removing one element makes the size zero
+        // this means the head and tail should both be null
+        this->head = this->tail = nullptr;
+    } else {
+        // The new head becomes the next node from the current head
+        this->head = this->head->next;
+        this->head->prev = nullptr;
+    }
+    // Decrease the size because we removed a node
+    this->size--;
+    // Delete to prevent memory leaks!
+    delete old_head;
+    return old_data;
+}
+```
+
+### Pop front
+```cpp
+std::string pop_front() {
+    if (!this->size_) {
+        throw std::domain_error("List is empty");
+    }
+
+}
+```
+
+### Push back
+```cpp
+std::string push_back(std::string val) {
+    Node* new_node = new Node{val};
+    if (this->size_) {
+        new_node->prev = this->tail;
+        this->tail->next = new_node;
+        this->tail = new_node;
+    } else {
+        this->head = this->tail = new_node;
+    }
+    this->size++;
+    return val;
+}
+```
+
+### Push front
+```cpp
+std::string push_front(std::string val) {
+    Node* new_node = new Node{val};
+    if (this->size_) {
+        new_node->next = this->head;
+        this->head->prev = new_node;
+        this->head = new_node;
+    } else {
+        this->head = this->tail = new_node;
+    }
+    this->size++;
+    return val;
+}
+```
+
 ## Int Min Heap
 
 ### Heap sort
@@ -7,7 +101,7 @@
 ```cpp
 std::pair<int *, int> intMinHeap::heapsort() {
     // Store orig heap in variables
-    int* ptr_to_orig_A = A;
+    int* ptr_to_orig_A = this->A;
     int orig_size = this->size;
     this->A = new int[this->size];
 
