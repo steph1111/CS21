@@ -22,11 +22,12 @@ class Record {
     protected:
         unsigned int id;
     public:
-        Record() {}
-        Record(unsigned int id) { this->id = id; }
+        Record();
+        Record(unsigned int id);
         virtual unsigned int getID()=0;
         virtual Record* clone()=0;
-        bool operator==(const Record& that) { return this->id == that.id; }
+        bool operator==(const Record& that);
+        void operator=(const Record& that);
 };
 
 #endif  // RECORD_H

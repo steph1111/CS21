@@ -12,6 +12,7 @@
 #include <list>
 #include <sstream>
 #include "hash_table.h"
+#include "record.h"
 
 const double C = 0.618034; // constant for hash, phi / 1
 
@@ -22,7 +23,7 @@ const double C = 0.618034; // constant for hash, phi / 1
  */
 HashTable::HashTable() {
     this->m = 100;
-    this->table = new std::list<Record>[this->m];
+    this->table = new std::list<Record*>[this->m];
 }
 
 /**
@@ -33,7 +34,7 @@ HashTable::HashTable() {
  */
 HashTable::HashTable(int size) {
     this->m = size;
-    this->table = new std::list<Record>[this->m];
+    this->table = new std::list<Record*>[this->m];
 }
 
 /**
@@ -49,7 +50,7 @@ HashTable::~HashTable() {
  * @param rec Record to add.
 */
 void HashTable::insert(Record* rec) {
-    this->table[this->hash(rec)].push_front(*rec);
+    this->table[this->hash(rec)].push_front(rec);
 }
 
 /**
@@ -58,9 +59,22 @@ void HashTable::insert(Record* rec) {
  * @param key Key of the record to delete.
 */
 void HashTable::del(int key) {
-    // TODO: Will prob cause memory leaks, would be best to avoid that
-    this->table[this->hash(key)].remove(*this->find(key));
+    this->table[this->hash(key)].remove(this->find(key));
 }
+
+/**
+ * Finds an Record. Returns a newly allocated record object
+ * WHICH MUST BE DELETED.
+ * 
+ * @param key Key at which to search for a `Record` at.
+ * @return Pointer to a copy of found `Record`, nullptr if not found
+*/
+Record* HashTable::search(int key) {
+    return this->find(key)->clone();
+}
+
+
+// private:
 
 /**
  * Finds an Record.
@@ -68,17 +82,15 @@ void HashTable::del(int key) {
  * @param key Key at which to search for a `Record` at.
  * @return Pointer to a copy of found `Record`, 0 if not found
 */
-Record* HashTable::search(int key) {
-    return this->find(key); // WHY THE FUCK do we have two function
-}
+Record* HashTable::find(unsigned key) {
+    unsigned key_hash = this->hash(key);
 
-
-// private:
-
-// find return value: some type of index.
-Record* HashTable::find(int key) {
-    // TODO: Finish this that would be pretty epic.
-    this->table[this->hash(key)];
+    for(auto itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
+        if ((*itr)->getID() == key) {
+            return *itr;
+        }
+    }
+    return nullptr;
 }
 
 /**
@@ -99,6 +111,6 @@ int HashTable::hash(Record* rec) {
  * 
  * @param k Key of the `Record` to hash.
 */
-int HashTable::hash(int k) {
-    return (int)(this->m * (k * C - (int)(k * C)));
+unsigned HashTable::hash(unsigned k) {
+    return (unsigned)(this->m * (k * C - (unsigned)(k * C)));
 }

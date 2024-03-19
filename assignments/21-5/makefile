@@ -16,6 +16,9 @@ hash_table.o: hash_table.cpp hash_table.h record.h
 str_record.o: str_record.cpp str_record.h record.h
 	$(CPP) $(CPPFLAGS) -c str_record.cpp
 
+record.o: record.cpp record.h
+	$(CPP) $(CPPFLAGS) -c record.cpp
+
 # Removes all compiled object files and the executable
 clean:
 	rm -f ./*.o ./$(EXECUTABLE)

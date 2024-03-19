@@ -45,17 +45,48 @@ class HashTable{
     */
     void insert(Record* rec);
 
-    void del(int); // delete a Record
+    /**
+     * Removes a `Record` from the `HashTable`.
+     * 
+     * @param key Key of the record to delete.
+    */
+    void del(int key);
+
     // return pointer to a copy of found Record, or 0
+
+    /**
+     * Finds an Record.
+     * 
+     * @param key Key at which to search for a `Record` at.
+     * @return Pointer to a copy of found `Record`, 0 if not found
+    */
     Record *search(int); 
+
     private:
+        
         // find return value: some type of index
-        Record *find(int); // helper search fn
-        int hash(Record *); // hash value for Record
-        int hash(int); // hash value for key  
+        Record* find(unsigned); // helper search fn
+
+        /**
+         * Hash a `Record` object.
+         * 
+         * @param rec `Record` object to hash.
+         * @return Has of record oject using the multiplication method.
+        */
+        int hash(Record* rec);
+        
+        /**
+         * Helper function for `int HashTable::hash(Record* rec)`. Hashes a
+         * key of a `Record` object using the multiplication method.
+         * 
+         * hash(k) = ⌊m(kc-⌊kc⌋)⌋ (where c = 1 / Φ)
+         * 
+         * @param k Key of the `Record` to hash.
+        */
+        unsigned hash(unsigned key); // hash value for key  
         
         int m;                     // size of table
-        std::list<Record>* table;  // array of m lists that hold `Records`
+        std::list<Record*>* table;  // array of m lists that hold `Records`
 };
 
 
