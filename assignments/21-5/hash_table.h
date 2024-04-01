@@ -12,6 +12,7 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
+#include <memory>
 #include <iostream>
 #include <list>
 #include "record.h"
@@ -31,7 +32,7 @@ class HashTable{
      * 
      * @param size Table size
      */
-    HashTable(int size);
+    HashTable(unsigned size);
 
     /**
      * Destructor for `HashTable` object, clean up allocated memory 
@@ -60,33 +61,50 @@ class HashTable{
      * @param key Key at which to search for a `Record` at.
      * @return Pointer to a copy of found `Record`, 0 if not found
     */
-    Record *search(int); 
+    std::unique_ptr<Record> search(int key); 
+
+    /**
+     * Clears data from the hash table. Does not modify the size.
+    */
+    void clear();
+
+    /**
+     * Write all hash table data to the specified stream.
+     * 
+     * @param stream Output file stream to write to.
+    */
+    void write(std::ofstream& stream) const;
 
     private:
         
-        // find return value: some type of index
-        Record* find(unsigned); // helper search fn
+    /**
+     * Finds an Record.
+     * 
+     * @param key Key at which to search for a `Record` at.
+     * @return Pointer to a copy of found `Record`, 0 if not found
+    */
+    std::list<std::unique_ptr<Record>>::iterator find(unsigned key); // helper search fn
 
-        /**
-         * Hash a `Record` object.
-         * 
-         * @param rec `Record` object to hash.
-         * @return Has of record oject using the multiplication method.
-        */
-        int hash(Record* rec);
-        
-        /**
-         * Helper function for `int HashTable::hash(Record* rec)`. Hashes a
-         * key of a `Record` object using the multiplication method.
-         * 
-         * hash(k) = ⌊m(kc-⌊kc⌋)⌋ (where c = 1 / Φ)
-         * 
-         * @param k Key of the `Record` to hash.
-        */
-        unsigned hash(unsigned key); // hash value for key  
-        
-        int m;                     // size of table
-        std::list<Record*>* table;  // array of m lists that hold `Records`
+    /**
+     * Hash a `Record` object.
+     * 
+     * @param rec `Record` object to hash.
+     * @return Has of record oject using the multiplication method.
+    */
+    int hash(Record* rec);
+    
+    /**
+     * Helper function for `int HashTable::hash(Record* rec)`. Hashes a
+     * key of a `Record` object using the multiplication method.
+     * 
+     * hash(k) = ⌊m(kc-⌊kc⌋)⌋ (where c = 1 / Φ)
+     * 
+     * @param k Key of the `Record` to hash.
+    */
+    unsigned hash(unsigned key);  // hash value for key  
+
+    unsigned m; // size of table
+    std::list<std::unique_ptr<Record>>* table;  // array of m lists that hold `Record` pointers
 };
 
 

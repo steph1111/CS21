@@ -11,6 +11,8 @@
 
 #include <list>
 #include <sstream>
+#include <memory>
+#include <fstream>
 #include "hash_table.h"
 #include "record.h"
 
@@ -23,7 +25,7 @@ const double C = 0.618034; // constant for hash, phi / 1
  */
 HashTable::HashTable() {
     this->m = 100;
-    this->table = new std::list<Record*>[this->m];
+    this->table = new std::list<std::unique_ptr<Record>>[this->m];
 }
 
 /**
@@ -32,9 +34,9 @@ HashTable::HashTable() {
  * 
  * @param size Table size
  */
-HashTable::HashTable(int size) {
+HashTable::HashTable(unsigned size) {
     this->m = size;
-    this->table = new std::list<Record*>[this->m];
+    this->table = new std::list<std::unique_ptr<Record>>[this->m];
 }
 
 /**
@@ -50,47 +52,82 @@ HashTable::~HashTable() {
  * @param rec Record to add.
 */
 void HashTable::insert(Record* rec) {
-    this->table[this->hash(rec)].push_front(rec);
+    // emplace_front uses uniq_ptrs
+    this->table[this->hash(rec)].emplace_front(rec);
 }
 
 /**
  * Removes a `Record` from the `HashTable`.
  * 
  * @param key Key of the record to delete.
+ * @throw `std::invalid_argument` if key not found.
 */
 void HashTable::del(int key) {
-    this->table[this->hash(key)].remove(this->find(key));
+    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    // Make sure item exists
+    if (item != this->table[this->hash(key)].end()) {
+        // .erase() takes in an iterator of the position to remove
+        this->table[this->hash(key)].erase(item);
+    }
+    throw std::invalid_argument("Key not found");
 }
 
 /**
- * Finds an Record. Returns a newly allocated record object
- * WHICH MUST BE DELETED.
+ * Finds an Record. Returns a newly allocated record pointer
  * 
  * @param key Key at which to search for a `Record` at.
  * @return Pointer to a copy of found `Record`, nullptr if not found
+ * @throw `std::invalid_argument` if key not found.
 */
-Record* HashTable::search(int key) {
-    return this->find(key)->clone();
+std::unique_ptr<Record> HashTable::search(int key) {
+    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    // Make sure item exists
+    if (item != this->table[this->hash(key)].end()) {
+        std::unique_ptr<Record>((item->get()->clone()));
+    }
+    throw std::invalid_argument("Key not found");
 }
 
+/**
+ * Clears data from the hash table. Does not modify the size.
+*/
+void HashTable::clear() {
+    for (unsigned i = 0; i < this->m; i++) {
+        this->table[i].clear();
+    }
+}
+
+/**
+ * Write all hash table data to the specified stream.
+ * 
+ * @param stream Output file stream to write to.
+*/
+void HashTable::write(std::ofstream& stream) const {
+    for (unsigned i = 0; i < this->m; i++) {
+        for (std::list<std::unique_ptr<Record>>::iterator itr = this->table[i].begin(); itr != this->table[i].end(); itr++) {
+            // FIXME: to string does not wanna work here wtf 
+            stream << itr->get()->getID() << "\n";
+        }
+    }
+}
 
 // private:
 
 /**
- * Finds an Record.
+ * Finds an `Record`.
  * 
  * @param key Key at which to search for a `Record` at.
- * @return Pointer to a copy of found `Record`, 0 if not found
+ * @return An iterator to the found `Record`, .end() if not found
 */
-Record* HashTable::find(unsigned key) {
+std::list<std::unique_ptr<Record>>::iterator HashTable::find(unsigned key) {
     unsigned key_hash = this->hash(key);
 
-    for(auto itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
-        if ((*itr)->getID() == key) {
-            return *itr;
+    for(std::list<std::unique_ptr<Record>>::iterator itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
+        if (itr->get()->getID() == key) {
+            return itr;
         }
     }
-    return nullptr;
+    return table[key_hash].end();
 }
 
 /**

@@ -15,7 +15,8 @@
 #include <iostream>
 #include "record.h"
 
-class StrRecord : Record {
+class StrRecord : public Record {
+    public:
     /**
      * Create a string record. Default constructor.
     */
@@ -30,11 +31,21 @@ class StrRecord : Record {
     StrRecord(unsigned int id, std::string data);
 
     /**
+     * Create a `StrRecord`from a string. Formatted as
+     * `######### text text text...`
+     * Where the first token is the id and the following tokens are the data.
+     * 
+     * @param str 
+    */
+    StrRecord(std::string str);
+
+    /**
      * Copy constructor for a StrRecord object.
      * 
      * @param that Another StrRecord object to create a new StrRecord object from.
     */
     StrRecord(StrRecord& that);
+
     /**
      * Returns the value of a key for a Record object.
      * 
@@ -55,6 +66,13 @@ class StrRecord : Record {
      * @return true if the contents of the objects are the same, otherwise, false.
     */
     bool operator==(const StrRecord& that);
+
+    /**
+     * Creates a string representation of the record.
+     * 
+     * @return String representation.
+    */
+    std::string to_str() const;
 
     protected:
     std::string data;

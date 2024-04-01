@@ -10,9 +10,9 @@
 */
 
 #include <iostream>
+#include <sstream>
 #include "record.h"
 #include "str_record.h"
-
 
 /**
  * Create a `StrRecord`from an id and data.
@@ -26,14 +26,25 @@ StrRecord::StrRecord(unsigned int id, std::string data) {
 }
 
 /**
+ * Create a `StrRecord`from a string. Formatted as
+ * ######### text text text...
+ * Where the first token is the id and the following tokens are the data.
+ * 
+ * @param str 
+*/
+StrRecord::StrRecord(std::string str) {
+    std::stringstream sin(str);
+    sin >> this->id;
+    sin >> std::ws;
+    std::getline(sin, this->data);
+}
+
+/**
  * Copy constructor for a StrRecord object.
  * 
  * @param that Another StrRecord object to create a new StrRecord object from.
 */
-StrRecord::StrRecord(StrRecord& that) {
-    this->id = that.id;
-    this->data = that.data;
-}
+StrRecord::StrRecord(StrRecord& that) : Record(that.id), data(that.data) {};
 
 /**
  * Returns the value of a key for a Record object.
@@ -59,3 +70,10 @@ Record* StrRecord::clone() {
 bool StrRecord::operator==(const StrRecord& that) {
     return this->id == that.id && that.data == this->data;
 }
+
+/**
+ * Creates a string representation of the record.
+ * 
+ * @return String representation.
+*/
+std::string StrRecord::to_str() const { return std::to_string(this->id) + " " + this->data; }

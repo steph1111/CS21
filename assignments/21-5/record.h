@@ -11,6 +11,7 @@
 #ifndef RECORD_H
 #define RECORD_H
 
+#include <iostream>
 /**
  * abstract base class for data
  * also overload operator= if necessary
@@ -28,6 +29,7 @@ class Record {
         virtual Record* clone()=0;
         bool operator==(const Record& that);
         void operator=(const Record& that);
+        std::string to_str() const;
 };
 
 #endif  // RECORD_H
