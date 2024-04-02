@@ -62,7 +62,7 @@ int main() {
                         std::cerr << "Delete not found: " << input_int << "\n";
                     }
                     break;
-                
+
                 case 4: // Search for a record
                     std::cout << "search for record - key? ";
                     std::getline(std::cin, input_str);
@@ -74,12 +74,12 @@ int main() {
                         std::cerr << "Search not found: " << input_int << "\n";
                     }
                     break;
-                
+
                 case 5: // Clear entire hash table
                     std::cout << "clearing hash table.\n";
                     table.clear();
                     break;
-                
+
                 case 6: // Save data to a file
                     std::cout << "write hash table - filename? ";
                     std::getline(std::cin, input_str);

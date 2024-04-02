@@ -42,7 +42,6 @@ HashTable::HashTable(unsigned size) {
  * Destructor for `HashTable` object, clean up allocated memory 
 */
 HashTable::~HashTable() {
-    std::cout << "deleting the shit" << std::endl;
     delete[] this->table;
 }
 
