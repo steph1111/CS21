@@ -10,7 +10,7 @@
 */
 
 #include <iostream>
-#include <sstream>
+#include <iomanip>
 #include "record.h"
 #include "str_record.h"
 
@@ -62,4 +62,8 @@ bool StrRecord::operator==(const StrRecord& that) {
  * 
  * @return String representation.
 */
-std::string StrRecord::to_str() const { return std::to_string(this->id) + " " + this->data; }
+std::string StrRecord::to_str() const { 
+    std::stringstream sin;
+    sin << std::right << std::setw(9) << std::setfill('0') << this->id << " " << this->data;
+    return sin.str();
+}
