@@ -10,7 +10,6 @@
 */
 
 #include <list>
-#include <sstream>
 #include <memory>
 #include <fstream>
 #include "hash_table.h"
@@ -43,8 +42,20 @@ HashTable::HashTable(unsigned size) {
  * Destructor for `HashTable` object, clean up allocated memory 
 */
 HashTable::~HashTable() {
+    std::cout << "deleting the shit" << std::endl;
     delete[] this->table;
 }
+
+/**
+ * Add a new `Record` to the `HashTable`
+ * 
+ * @param rec Record to add.
+*/
+// void HashTable::insert(std::unique_ptr<Record> rec) {
+//     // emplace_front uses uniq_ptrs
+//     this->table[this->hash(rec->getID())].emplace_front(rec.get());
+// }
+
 
 /**
  * Add a new `Record` to the `HashTable`
@@ -64,11 +75,12 @@ void HashTable::insert(Record* rec) {
 */
 void HashTable::del(int key) {
     std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
-    // Make sure item exists
-    if (item != this->table[this->hash(key)].end()) {
-        // .erase() takes in an iterator of the position to remove
-        this->table[this->hash(key)].erase(item);
-    }
+        // Make sure item exists
+        if (item != this->table[this->hash(key)].end()) {
+            // .erase() takes in an iterator of the position to remove
+            this->table[this->hash(key)].erase(item);
+            return;
+        }
     throw std::invalid_argument("Key not found");
 }
 
@@ -83,7 +95,7 @@ std::unique_ptr<Record> HashTable::search(int key) {
     std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
     // Make sure item exists
     if (item != this->table[this->hash(key)].end()) {
-        std::unique_ptr<Record>((item->get()->clone()));
+        return std::unique_ptr<Record>((item->get()->clone()));
     }
     throw std::invalid_argument("Key not found");
 }
@@ -105,8 +117,7 @@ void HashTable::clear() {
 void HashTable::write(std::ofstream& stream) const {
     for (unsigned i = 0; i < this->m; i++) {
         for (std::list<std::unique_ptr<Record>>::iterator itr = this->table[i].begin(); itr != this->table[i].end(); itr++) {
-            // FIXME: to string does not wanna work here wtf 
-            stream << itr->get()->getID() << "\n";
+            stream << itr->get()->to_str() << "\n";
         }
     }
 }

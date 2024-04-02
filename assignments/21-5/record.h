@@ -23,13 +23,13 @@ class Record {
     protected:
         unsigned int id;
     public:
-        Record();
-        Record(unsigned int id);
+        Record() {};
+        Record(unsigned int id) { this->id = id; }
         virtual unsigned int getID()=0;
         virtual Record* clone()=0;
-        bool operator==(const Record& that);
-        void operator=(const Record& that);
-        std::string to_str() const;
+        bool operator==(const Record& that) { return this->id == that.id; }
+        void operator=(const Record& that) { this->id = that.id; }
+        virtual std::string to_str() const =0;
 };
 
 #endif  // RECORD_H

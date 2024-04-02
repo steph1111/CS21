@@ -46,6 +46,8 @@ class HashTable{
     */
     void insert(Record* rec);
 
+    void insert(std::unique_ptr<Record> rec);
+
     /**
      * Removes a `Record` from the `HashTable`.
      * 

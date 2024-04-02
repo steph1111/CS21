@@ -31,15 +31,6 @@ class StrRecord : public Record {
     StrRecord(unsigned int id, std::string data);
 
     /**
-     * Create a `StrRecord`from a string. Formatted as
-     * `######### text text text...`
-     * Where the first token is the id and the following tokens are the data.
-     * 
-     * @param str 
-    */
-    StrRecord(std::string str);
-
-    /**
      * Copy constructor for a StrRecord object.
      * 
      * @param that Another StrRecord object to create a new StrRecord object from.

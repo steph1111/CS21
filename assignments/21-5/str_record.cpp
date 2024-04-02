@@ -26,20 +26,6 @@ StrRecord::StrRecord(unsigned int id, std::string data) {
 }
 
 /**
- * Create a `StrRecord`from a string. Formatted as
- * ######### text text text...
- * Where the first token is the id and the following tokens are the data.
- * 
- * @param str 
-*/
-StrRecord::StrRecord(std::string str) {
-    std::stringstream sin(str);
-    sin >> this->id;
-    sin >> std::ws;
-    std::getline(sin, this->data);
-}
-
-/**
  * Copy constructor for a StrRecord object.
  * 
  * @param that Another StrRecord object to create a new StrRecord object from.
