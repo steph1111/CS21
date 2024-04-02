@@ -29,7 +29,7 @@ class Record {
         virtual Record* clone()=0;
         bool operator==(const Record& that) { return this->id == that.id; }
         void operator=(const Record& that) { this->id = that.id; }
-        virtual std::string to_str() const =0;
+        virtual std::string to_str() const=0;
 };
 
 #endif  // RECORD_H

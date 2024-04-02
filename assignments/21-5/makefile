@@ -3,8 +3,8 @@ CPPFLAGS = -Wall -Wpedantic -Wextra
 EXECUTABLE = p5
 
 # Target is the executable, add dependances
-$(EXECUTABLE): main.o hash_table.o str_record.o record.o
-	$(CPP) $(CPPFLAGS) -o $(EXECUTABLE) main.o hash_table.o str_record.o record.o
+$(EXECUTABLE): main.o hash_table.o str_record.o
+	$(CPP) $(CPPFLAGS) -o $(EXECUTABLE) main.o hash_table.o str_record.o 
 
 # define how each object file is to be built (one clause per .cpp file)
 main.o: main.cpp hash_table.h str_record.h

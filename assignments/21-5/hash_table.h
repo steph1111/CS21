@@ -42,11 +42,9 @@ class HashTable{
     /**
      * Add a new `Record` to the `HashTable`
      * 
-     * @param rec Record to add.
+     * @param rec Pointer to the record to add.
     */
     void insert(Record* rec);
-
-    void insert(std::unique_ptr<Record> rec);
 
     /**
      * Removes a `Record` from the `HashTable`.
