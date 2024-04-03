@@ -13,19 +13,19 @@
 
 #include <iostream>
 
-// Abstract base class for data in HashTable
+// Abstract base class for data in `HashTable`
 class Record {
     protected:
         unsigned int id;
     public:
         /**
-         * Default constructor for Record object.
+         * Default constructor for `Record` object.
         */
-        Record() {};
+        Record() {}
         /**
-         * Constructor for Record object with id parameter.
+         * Constructor for `Record` object with id parameter.
          * 
-         * @param id Id of Record
+         * @param id Id of `Record`
         */
         Record(unsigned int id) { this->id = id; }
 
@@ -46,10 +46,10 @@ class Record {
          * 
          * @return Pointer to a copy of the Record object.
         */
-        virtual Record* clone() const=0;
+        virtual Record* clone()=0;
 
         /**
-         * Checks if a Record object is equal to another Record object.
+         * Checks if a `Record` object is equal to another `Record` object.
          * 
          * @param that Other record object to compare.
          * @return true if the two Records compare equal, otherwise false.
@@ -57,9 +57,9 @@ class Record {
         bool operator==(const Record& that) const { return this->id == that.id; }
 
         /**
-         * Assigns a Record object to another Record object. 
+         * Assigns a `Record` object to another Record object. 
          * 
-         * @param that Record object to assign to this. 
+         * @param that `Record` object to assign to this. 
         */
         void operator=(const Record& that) { this->id = that.id; }
 

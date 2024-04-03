@@ -1,5 +1,5 @@
 CPP = g++
-CPPFLAGS = -Wall -Wpedantic -Wextra -g
+CPPFLAGS = -Wall -Wpedantic -Wextra
 EXECUTABLE = p5
 
 # Target is the executable, add dependances

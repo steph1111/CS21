@@ -8,7 +8,6 @@
  * Declaration of StrRecord class. The StrRecord derives
  * from a Record. It contains an integer key and string data.
 */
-
 #ifndef STR_RECORD_H
 #define STR_RECORD_H
 
@@ -42,7 +41,7 @@ class StrRecord : public Record {
      * 
      * @return The key value.
     */
-    unsigned int getID();
+    unsigned int getID() const;
 
     /**
      * Clones a string record creating a new heap allocated record object.
@@ -56,7 +55,7 @@ class StrRecord : public Record {
      * 
      * @return true if the contents of the objects are the same, otherwise, false.
     */
-    bool operator==(const StrRecord& that);
+    bool operator==(const StrRecord& that) const;
 
     /**
      * Creates a string representation of the record.

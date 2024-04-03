@@ -32,7 +32,7 @@ class HashTable{
      * 
      * @param size Table size
      */
-    HashTable(unsigned size);
+    HashTable(unsigned int size);
 
     /**
      * Destructor for `HashTable` object, clean up allocated memory 
@@ -101,9 +101,9 @@ class HashTable{
      * 
      * @param k Key of the `Record` to hash.
     */
-    unsigned hash(unsigned key);  // hash value for key  
+    unsigned int hash(unsigned key);  // hash value for key  
 
-    unsigned m; // size of table
+    unsigned int m; // size of table
     std::list<std::unique_ptr<Record>>* table;  // array of m lists that hold `Record` pointers
 };
 

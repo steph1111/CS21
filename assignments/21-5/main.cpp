@@ -4,7 +4,7 @@
  * Email:   stephanielh1111@gmail.com
  * @date    04/04/24
  * CS21:    Assignment#5
- * Status:  Not working/Not tested. :(
+ * Status:  Working/Tested
  *
  * Demonstrates functionality of the `HashTable` class.
 */
@@ -15,8 +15,8 @@
 #include "str_record.h"
 
 std::pair<int, std::string> split_data(std::string str) {
-    int index = str.find(' ');
-    return std::make_pair(std::stoi(str.substr(0, index)), str.substr(index + 1, str.size() - index));
+    int i = str.find(' ');
+    return std::make_pair(std::stoi(str.substr(0, i)), str.substr(i + 1, str.size() - i));
 }
 
 int main() {
@@ -28,7 +28,8 @@ int main() {
     HashTable table(178000);
 
     try { // Try block to avoid memory leaks for invalid input
-        std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit -- Your choice? ";
+        std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit";
+        std::cout << " -- Your choice? ";
         while(std::getline(std::cin, choice) && choice != "7") {
             switch (std::stoi(choice)) {
                 case 1: // Read data from a file
@@ -89,7 +90,8 @@ int main() {
                     }
                     break;
             }
-            std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit -- Your choice? ";
+            std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit";
+            std::cout << " -- Your choice? ";
         }
     } catch (std::invalid_argument const&){
         std::cerr << "Invalid input. Exiting program.\n";

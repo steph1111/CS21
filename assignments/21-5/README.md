@@ -71,7 +71,7 @@ Create a "main program" that presents the user with a menu that allows the user 
 ## Input
 An ascii text file containing one nine digit integer (leading zeros are a possibility) followed by a space followed by additional unspecified information. Line length is guaranteed to be less than 256 characters. The id number is the key. Each record is on one line. The number of records is not specified. Do not modify the input file or make more than one pass through the file.
 
- 
+
 ## Sample input/output
 ```sh
 [steveh@pengo HashTable]$ ./p5 

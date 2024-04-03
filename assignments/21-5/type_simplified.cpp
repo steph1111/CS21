@@ -16,6 +16,7 @@
 #include "record.h"
 
 const double C = 0.618034; // constant for hash, 1 / phi
+typedef std::list<std::unique_ptr<Record>>::iterator Iterator;
 
 // public:
 /**
@@ -62,7 +63,7 @@ void HashTable::insert(Record* rec) {
  * @throw `std::invalid_argument` if key not found.
 */
 void HashTable::del(int key) {
-    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    Iterator item = this->find(key);
     unsigned int key_hash = this->hash(key);
         // Make sure item exists
         if (item != this->table[key_hash].end()) {
@@ -81,7 +82,7 @@ void HashTable::del(int key) {
  * @throw `std::invalid_argument` if key not found.
 */
 std::unique_ptr<Record> HashTable::search(int key) {
-    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    Iterator item = this->find(key);
     // Make sure item exists
     if (item != this->table[this->hash(key)].end()) {
         return std::unique_ptr<Record>((item->get()->clone()));
@@ -105,7 +106,7 @@ void HashTable::clear() {
 */
 void HashTable::write(std::ofstream& stream) const {
     for (unsigned i = 0; i < this->m; i++) {
-        for (std::list<std::unique_ptr<Record>>::iterator itr = this->table[i].begin(); itr != this->table[i].end(); itr++) {
+        for (Iterator itr = this->table[i].begin(); itr != this->table[i].end(); itr++) {
             stream << itr->get()->to_str() << "\n";
         }
     }
@@ -119,10 +120,10 @@ void HashTable::write(std::ofstream& stream) const {
  * @param key Key at which to search for a `Record` at.
  * @return An iterator to the found `Record`, .end() if not found
 */
-std::list<std::unique_ptr<Record>>::iterator HashTable::find(unsigned int key) {
+Iterator HashTable::find(unsigned int key) {
     unsigned int key_hash = this->hash(key);
 
-    for(std::list<std::unique_ptr<Record>>::iterator itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
+    for(Iterator itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
         if (itr->get()->getID() == key) {
             return itr;
         }

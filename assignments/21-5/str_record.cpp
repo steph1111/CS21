@@ -37,7 +37,7 @@ StrRecord::StrRecord(StrRecord& that) : Record(that.id), data(that.data) {};
  * 
  * @return The key value.
 */
-unsigned int StrRecord::getID() { return this->id; }
+unsigned int StrRecord::getID() const { return this->id; }
 
 /**
  * Clones a string record creating a new heap allocated record object.
@@ -53,7 +53,7 @@ Record* StrRecord::clone() {
  * 
  * @return true if the contents of the objects are the same, otherwise, false.
 */
-bool StrRecord::operator==(const StrRecord& that) {
+bool StrRecord::operator==(const StrRecord& that) const {
     return this->id == that.id && that.data == this->data;
 }
 
