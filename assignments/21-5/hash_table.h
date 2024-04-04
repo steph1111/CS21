@@ -53,7 +53,7 @@ class HashTable{
      * 
      * @param key Key of the record to delete.
     */
-    void del(int key);
+    void del(unsigned int key);
 
     // return pointer to a copy of found Record, or 0
 
@@ -63,7 +63,7 @@ class HashTable{
      * @param key Key at which to search for a `Record` at.
      * @return Pointer to a copy of found `Record`, 0 if not found
     */
-    std::unique_ptr<Record> search(int key); 
+    std::unique_ptr<Record> search(unsigned int key); 
 
     /**
      * Clears data from the hash table. Does not modify the size.
@@ -85,7 +85,7 @@ class HashTable{
      * @param key Key at which to search for a `Record` at.
      * @return Pointer to a copy of found `Record`, 0 if not found
     */
-    TableIterator find(unsigned key);
+    TableIterator find(unsigned int key);
 
     /**
      * Hash a `Record` object.

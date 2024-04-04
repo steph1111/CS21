@@ -64,7 +64,7 @@ void HashTable::insert(Record* rec) {
  * @param key Key of the record to delete.
  * @throw `std::invalid_argument` if key not found.
 */
-void HashTable::del(int key) {
+void HashTable::del(unsigned int key) {
     TableIterator item = this->find(key);
     unsigned int key_hash = this->hash(key);
         // Make sure item exists
@@ -83,7 +83,7 @@ void HashTable::del(int key) {
  * @return Pointer to a copy of found `Record`, nullptr if not found
  * @throw `std::invalid_argument` if key not found.
 */
-std::unique_ptr<Record> HashTable::search(int key) {
+std::unique_ptr<Record> HashTable::search(unsigned int key) {
     TableIterator item = this->find(key);
     // Make sure item exists
     if (item != this->table[this->hash(key)].end()) {
@@ -155,5 +155,6 @@ int HashTable::hash(Record* rec) {
  * @param k Key of the `Record` to hash.
 */
 unsigned int HashTable::hash(unsigned int k) {
-    return (unsigned int)(this->m * (k * this->C - (unsigned int)(k * this->C)));
+    double prod = k * this->C ;
+    return (unsigned int)(this->m * (prod - (unsigned int)prod));
 }
