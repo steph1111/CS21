@@ -15,7 +15,7 @@
 #include "hash_table.h"
 #include "record.h"
 
-const double C = 0.618034; // constant for hash, 1 / phi
+typedef std::list<std::unique_ptr<Record>>::iterator TableIterator;
 
 // public:
 /**
@@ -51,8 +51,11 @@ HashTable::~HashTable() {
  * @param rec Record to add.
 */
 void HashTable::insert(Record* rec) {
+    // Clone and delete the user's pointer so they do not have access
+    Record* new_rec = rec->clone();
+    delete rec;
     // emplace_front uses uniq_ptrs
-    this->table[this->hash(rec)].emplace_front(rec);
+    this->table[this->hash(new_rec)].emplace_front(new_rec);
 }
 
 /**
@@ -62,7 +65,7 @@ void HashTable::insert(Record* rec) {
  * @throw `std::invalid_argument` if key not found.
 */
 void HashTable::del(int key) {
-    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    TableIterator item = this->find(key);
     unsigned int key_hash = this->hash(key);
         // Make sure item exists
         if (item != this->table[key_hash].end()) {
@@ -81,11 +84,12 @@ void HashTable::del(int key) {
  * @throw `std::invalid_argument` if key not found.
 */
 std::unique_ptr<Record> HashTable::search(int key) {
-    std::list<std::unique_ptr<Record>>::iterator item = this->find(key);
+    TableIterator item = this->find(key);
     // Make sure item exists
     if (item != this->table[this->hash(key)].end()) {
         return std::unique_ptr<Record>((item->get()->clone()));
     }
+    
     throw std::invalid_argument("Key not found");
 }
 
@@ -105,7 +109,8 @@ void HashTable::clear() {
 */
 void HashTable::write(std::ofstream& stream) const {
     for (unsigned i = 0; i < this->m; i++) {
-        for (std::list<std::unique_ptr<Record>>::iterator itr = this->table[i].begin(); itr != this->table[i].end(); itr++) {
+        for (TableIterator itr = this->table[i].begin();
+                itr != this->table[i].end(); itr++) {
             stream << itr->get()->to_str() << "\n";
         }
     }
@@ -119,10 +124,11 @@ void HashTable::write(std::ofstream& stream) const {
  * @param key Key at which to search for a `Record` at.
  * @return An iterator to the found `Record`, .end() if not found
 */
-std::list<std::unique_ptr<Record>>::iterator HashTable::find(unsigned int key) {
+TableIterator HashTable::find(unsigned int key) {
     unsigned int key_hash = this->hash(key);
 
-    for(std::list<std::unique_ptr<Record>>::iterator itr = this->table[key_hash].begin(); itr != this->table[key_hash].end(); itr++) {
+    for(TableIterator itr = this->table[key_hash].begin();
+            itr != this->table[key_hash].end(); itr++) {
         if (itr->get()->getID() == key) {
             return itr;
         }
@@ -149,5 +155,5 @@ int HashTable::hash(Record* rec) {
  * @param k Key of the `Record` to hash.
 */
 unsigned int HashTable::hash(unsigned int k) {
-    return (unsigned int)(this->m * (k * C - (unsigned int)(k * C)));
+    return (unsigned int)(this->m * (k * this->C - (unsigned int)(k * this->C)));
 }

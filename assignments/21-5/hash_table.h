@@ -17,6 +17,8 @@
 #include <list>
 #include "record.h"
 
+typedef std::list<std::unique_ptr<Record>>::iterator TableIterator;
+
 
 class HashTable{
     public:
@@ -83,15 +85,25 @@ class HashTable{
      * @param key Key at which to search for a `Record` at.
      * @return Pointer to a copy of found `Record`, 0 if not found
     */
-    std::list<std::unique_ptr<Record>>::iterator find(unsigned key); // helper search fn
+    TableIterator find(unsigned key);
 
     /**
      * Hash a `Record` object.
      * 
      * @param rec `Record` object to hash.
-     * @return Has of record oject using the multiplication method.
+     * @return Hash of record oject using the multiplication method.
     */
     int hash(Record* rec);
+
+    /**
+     * Helper function for `int HashTable::hash(Record* rec)`. Hashes a
+     * key of a `Record` object using the multiplication method.
+     * 
+     * hash(k) = ⌊m(kc-⌊kc⌋)⌋ (where c = 1 / Φ)
+     * 
+     * @param k Key of the `Record` to hash.
+    */
+    unsigned int hash(unsigned int k);  // hash value for key  
     
     /**
      * Helper function for `int HashTable::hash(Record* rec)`. Hashes a
@@ -101,10 +113,9 @@ class HashTable{
      * 
      * @param k Key of the `Record` to hash.
     */
-    unsigned int hash(unsigned key);  // hash value for key  
-
+    const double C = 0.618034; // constant for hash, 1 / phi
     unsigned int m; // size of table
-    std::list<std::unique_ptr<Record>>* table;  // array of m lists that hold `Record` pointers
+    std::list<std::unique_ptr<Record>>* table;
 };
 
 

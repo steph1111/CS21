@@ -1,7 +1,7 @@
 from random import randint, choice
 import string
 
-choose = string.ascii_uppercase + string.ascii_lowercase + string.digits +  " "
+choose = string.ascii_letters + string.digits +  " "
 
 with open("data.txt", mode="w") as file:
     for _ in range(10000):
