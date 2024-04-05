@@ -19,13 +19,13 @@
  * 
  * @param size Set size
  */
-DisjointSet::DisjointSet(unsigned int size) {
+DisjointSet::DisjointSet(unsigned size) {
     this->num_elements = size;
     this->num_sets = this->num_elements;
     this->p = new int[this->num_elements];
     this->r = new int[this->num_elements];
 
-    for (unsigned int i = 0; i < this->num_elements; i++) {
+    for (unsigned i = 0; i < this->num_elements; i++) {
         this->p[i] = i;  // Parent is itself
         this->r[i] = 0;  // Ranks start at zero
     }
@@ -75,14 +75,14 @@ int DisjointSet::find(int x) {
 /**
  * Gets the number of elements in the `DisjointSet`
 */
-unsigned int DisjointSet::get_num_elements() const {
+unsigned DisjointSet::get_num_elements() const {
     return this->num_elements;
 }
 
 /**
  * Gets the number of sets in the `DisjointSet`
 */
-unsigned int DisjointSet::get_num_sets() const {
+unsigned DisjointSet::get_num_sets() const {
     return this->num_sets;
 }
 

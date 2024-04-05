@@ -5,7 +5,7 @@
  * @date    04/18/24
  * CS21:    Assignment#6
  *
- * Declaration of DisjointSet class and methods. The DisjointSet class defines a 
+ * Declaration of `DisjointSet` class and methods. The `DisjointSet` class defines a 
  * union-find data structure.
 */
 
@@ -20,7 +20,7 @@ class DisjointSet {
      * 
      * @param size Set size
      */
-    DisjointSet(unsigned int size);
+    DisjointSet(unsigned size);
 
     /**
      * Destructor for `DisjointSet` object. Clean up allocated memory.
@@ -55,12 +55,12 @@ class DisjointSet {
     /**
      * Gets the number of elements in the `DisjointSet`
     */
-    unsigned int get_num_elements() const;
+    unsigned get_num_elements() const;
 
     /**
      * Gets the number of sets in the `DisjointSet`
     */
-    unsigned int get_num_sets() const;
+    unsigned get_num_sets() const;
 
     /**
      * Determine if two elements apart of the same set.
@@ -72,8 +72,8 @@ class DisjointSet {
 
     private:
     void link(int x, int y);
-    unsigned int num_elements;
-    unsigned int num_sets;
+    unsigned num_elements;
+    unsigned num_sets;
     // Parallel arrays
     int* p; // parent
     int* r; // rank
