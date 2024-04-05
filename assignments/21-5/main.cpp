@@ -16,20 +16,22 @@
 
 std::pair<int, std::string> split_data(std::string str) {
     int i = str.find(' ');
-    return std::make_pair(std::stoi(str.substr(0, i)), str.substr(i + 1, str.size() - i));
+    return std::make_pair(std::stoi(str.substr(0, i)), 
+        str.substr(i + 1, str.size() - i));
 }
 
 int main() {
     std::string choice;
     std::string input_str;
     int input_int;
-    std::pair<int, std::string> new_record;
-    std::unique_ptr<Record> temp_record; 
+    std::pair<int, std::string> rec;
+    std::unique_ptr<Record> temp_record;
+    StrRecord* rec_ptr;
     HashTable table(178000);
 
     try { // Try block to avoid memory leaks for invalid input
-        std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit";
-        std::cout << " -- Your choice? ";
+        std::cout << "(1)load (2)insert (3)delete (4)search (5)clear";
+        std::cout << " (6)save (7)quit -- Your choice? ";
         while(std::getline(std::cin, choice) && choice != "7") {
             switch (std::stoi(choice)) {
                 case 1: // Read data from a file
@@ -38,8 +40,10 @@ int main() {
                     {
                         std::ifstream fin(input_str);
                         while (std::getline(fin, input_str)) {
-                            new_record = split_data(input_str);
-                            table.insert(new StrRecord(new_record.first, new_record.second));
+                            rec = split_data(input_str);
+                            rec_ptr = new StrRecord(rec.first, rec.second);
+                            table.insert(rec_ptr);
+                            delete rec_ptr;
                         }
                     }
                     break;
@@ -47,8 +51,10 @@ int main() {
                 case 2: // Insert a (single) new record
                     std::cout << "input new record:\n";
                     std::getline(std::cin, input_str);
-                    new_record = split_data(input_str);
-                    table.insert(new StrRecord(new_record.first, new_record.second));
+                    rec = split_data(input_str);
+                    rec_ptr = new StrRecord(rec.first, rec.second);
+                    table.insert(rec_ptr);
+                    delete rec_ptr;
                     break;
 
                 case 3: // Delete a record
@@ -90,8 +96,8 @@ int main() {
                     }
                     break;
             }
-            std::cout << "(1)load (2)insert (3)delete (4)search (5)clear (6)save (7)quit";
-            std::cout << " -- Your choice? ";
+            std::cout << "(1)load (2)insert (3)delete (4)search (5)clear";
+            std::cout << " (6)save (7)quit -- Your choice? ";
         }
     } catch (std::invalid_argument const&){
         std::cerr << "Invalid input. Exiting program.\n";

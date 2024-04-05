@@ -51,9 +51,8 @@ HashTable::~HashTable() {
  * @param rec Record to add.
 */
 void HashTable::insert(Record* rec) {
-    // Clone and delete the user's pointer so they do not have access
+    // Clone so they do not have access
     Record* new_rec = rec->clone();
-    delete rec;
     // emplace_front uses uniq_ptrs
     this->table[this->hash(new_rec)].emplace_front(new_rec);
 }

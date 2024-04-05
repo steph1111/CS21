@@ -57,13 +57,6 @@ class Record {
         bool operator==(const Record& that) const { return this->id == that.id; }
 
         /**
-         * Assigns a `Record` object to another Record object. 
-         * 
-         * @param that `Record` object to assign to this. 
-        */
-        void operator=(const Record& that) { this->id = that.id; }
-
-        /**
          * VIRTUAL: Creates a string representation of the Record.
         */
         virtual std::string to_str() const=0;
