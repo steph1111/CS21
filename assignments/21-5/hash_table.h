@@ -12,8 +12,8 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <list>
 #include "record.h"
 

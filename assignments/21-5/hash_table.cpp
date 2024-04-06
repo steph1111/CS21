@@ -8,14 +8,9 @@
  * Definitions of methods of `HashTable` class. The `HashTable` class 
  * defines a hash table data structure.
 */
-
-#include <list>
-#include <memory>
 #include <fstream>
 #include "hash_table.h"
 #include "record.h"
-
-typedef std::list<std::unique_ptr<Record>>::iterator TableIterator;
 
 // public:
 /**
