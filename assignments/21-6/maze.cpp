@@ -9,10 +9,9 @@
  * uses a `DisjointSet` to create a randomly generated maze.
 */
 
-#include "maze.h"
 #include <cstdlib>
 #include <time.h>
-
+#include "maze.h"
 
 // public: 
 
@@ -104,7 +103,6 @@ void Maze::create_maze() {
 */
 void Maze::remove_walls(unsigned i) {
     unsigned walls[4] = {left, right, up, down};
-    this->shuffle(walls, 4);
 
     for (unsigned j = 0; j < 4; j++) {
         switch(walls[j]) {
@@ -134,7 +132,7 @@ void Maze::remove_walls(unsigned i) {
 */
 void Maze::remove_wall(unsigned i, int j, uint8_t mask_i, uint8_t mask_j) {
     // Ensures j is a valid index and the sets are not already united
-    if (j > 0 && !this->maze->same_set(i, j)) {
+    if ( j> 0 && !this->maze->same_set(i, j)) {
         this->maze->unite(this->maze->find(i), this->maze->find(j));
         // Update hex representation
         this->grid[i] &= mask_i;
