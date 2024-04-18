@@ -32,6 +32,11 @@ class Maze {
     ~Maze();
 
     /**
+     * Creates a randomized maze.
+    */
+    void create_maze();
+
+    /**
      * Overload for `<<` operator. Enables usage of an output stream.
     */
     friend std::ostream& operator<<(std::ostream& out, const Maze& maze);
@@ -44,12 +49,8 @@ class Maze {
      * @param array An array to shuffle.
      * @param n Size of `array`
     */
-    void shuffle(unsigned* array, int n);
+    void shuffle_indexes();
 
-    /**
-     * Helper function which creates a randomized maze.
-    */
-    void create_maze();
 
     /**
      * Given an index, removes all valid walls from the square
@@ -75,7 +76,7 @@ class Maze {
      * @param i An index n the grid
      * @return The index to the left of `i`, -1 if out of bounds
     */
-    inline int left_index(unsigned i);
+    inline int left(unsigned i) const;
 
     /**
      * Given an index into the grid, get the index to the right
@@ -83,7 +84,7 @@ class Maze {
      * @param i An index n the grid
      * @return The index to the right of `i`, -1 if out of bounds
     */
-    inline int right_index(unsigned i);
+    inline int right(unsigned i) const;
 
     /**
      * Given an index into the grid, get the index above
@@ -91,7 +92,7 @@ class Maze {
      * @param i An index n the grid
      * @return The index above`i`, -1 if out of bounds
     */
-    inline int up_index(unsigned i);
+    inline int up(unsigned i) const;
 
     /**
      * Given an index into the grid, get the index below
@@ -99,14 +100,13 @@ class Maze {
      * @param i An index n the grid
      * @return The index below `i`, -1 if out of bounds
     */
-    inline int down_index(unsigned i);
+    inline int down(unsigned i) const;
 
     unsigned len;
     unsigned size;
     DisjointSet* maze;
     uint8_t* grid;
     unsigned* indexes;
-    enum directions {left, right, up, down};
     enum masks {left_mask=11, right_mask=14, up_mask=7, down_mask=13};
 };
 

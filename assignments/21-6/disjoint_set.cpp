@@ -3,7 +3,7 @@
  * @author  Stephanie L'Heureux (slheure)
  * Email:   stephanielh1111@gmail.com
  * @date    04/04/24
- * CS21:    Assignment#5
+ * CS21:    Assignment#6
  *
  * Definitions of methods of `DisjointSet` class. The `DisjointSet` class 
  * defines a union-find data structure.

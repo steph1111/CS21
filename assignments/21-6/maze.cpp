@@ -3,7 +3,7 @@
  * @author  Stephanie L'Heureux (slheure)
  * Email:   stephanielh1111@gmail.com
  * @date    04/18/24
- * CS21:    Assignment#5
+ * CS21:    Assignment#6
  *
  * Definitions of methods of `Maze` class. The `Maze` class 
  * uses a `DisjointSet` to create a randomly generated maze.
@@ -22,7 +22,6 @@
  * @param len The desired length of one size of the maze
 */
 Maze::Maze(unsigned len) {
-    srand(time(0)); 
     // Initialize all private variables
     this->len = len;
     this->size = this->len * this->len ;
@@ -39,12 +38,6 @@ Maze::Maze(unsigned len) {
     // First and last square are entry points
     this->grid[0] = 0xB;
     this->grid[this->size - 1] = 0xE;
-
-    // Shuffle indexes
-    this->shuffle(this->indexes, this->size);
-
-    // Randomly create a maze
-    this->create_maze();
 }
 
 /**
@@ -57,6 +50,18 @@ Maze::~Maze() {
 }
 
 /**
+ * Creates a randomized maze.
+*/
+void Maze::create_maze() {
+    // Shuffle indexes
+    this->shuffle_indexes();
+
+    for (unsigned i = 0; i < this->size && this->maze->get_num_sets(); i++) {
+        this->remove_walls(this->indexes[i]);
+    }
+}
+
+/**
  * Overload for `<<` operator. Enables usage of an output stream.
 */
 std::ostream& operator<<(std::ostream& out, const Maze& maze) {
@@ -64,6 +69,8 @@ std::ostream& operator<<(std::ostream& out, const Maze& maze) {
         out << std::hex << (int)maze.grid[i];
         if (!((i + 1) % maze.len)) out << "\n";
     }
+    // Change back to decimal format
+    std::cout << std::dec;
     return out;
 }
 
@@ -71,27 +78,15 @@ std::ostream& operator<<(std::ostream& out, const Maze& maze) {
 
 /**
  * Fisher–Yates shuffle algorithm. Shuffles elements
- * in the `array` to be arrange in a random order.
- * 
- * @param array An array to shuffle.
- * @param n Size of `array`
+ * in the `indexes` array to be arrange in a random order.
 */
-void Maze::shuffle(unsigned* array, int n) {
+void Maze::shuffle_indexes() {
     int j, temp;
-    for (unsigned i = n - 1; i > 0; i--) {
+    for (unsigned i = this->size - 1; i > 0; i--) {
         j = rand() % (i + 1);
-        temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-}
-
-/**
- * Helper function which creates a randomized maze.
-*/
-void Maze::create_maze() {
-    for (unsigned i = 0; i < this->size; i++) {
-        this->remove_walls(this->indexes[i]);
+        temp = this->indexes[i];
+        this->indexes[i] = this->indexes[j];
+        this->indexes[j] = temp;
     }
 }
 
@@ -102,24 +97,10 @@ void Maze::create_maze() {
  * @param i Index to remove walls from 
 */
 void Maze::remove_walls(unsigned i) {
-    unsigned walls[4] = {left, right, up, down};
-
-    for (unsigned j = 0; j < 4; j++) {
-        switch(walls[j]) {
-            case left:
-                this->remove_wall(i, this->left_index(i), left_mask, right_mask);
-                break;
-            case right:
-                this->remove_wall(i, this->right_index(i), right_mask, left_mask);
-                break;
-            case up:
-                this->remove_wall(i, this->up_index(i), up_mask, down_mask);
-                break;
-            case down:
-                this->remove_wall(i, this->down_index(i), down_mask, up_mask);
-                break;
-        }
-    }
+    this->remove_wall(i, this->left(i), left_mask, right_mask);
+    this->remove_wall(i, this->right(i), right_mask, left_mask);
+    this->remove_wall(i, this->up(i), up_mask, down_mask);
+    this->remove_wall(i, this->down(i), down_mask, up_mask);
 }
 
 /**
@@ -132,7 +113,7 @@ void Maze::remove_walls(unsigned i) {
 */
 void Maze::remove_wall(unsigned i, int j, uint8_t mask_i, uint8_t mask_j) {
     // Ensures j is a valid index and the sets are not already united
-    if ( j> 0 && !this->maze->same_set(i, j)) {
+    if (j > 0 && !this->maze->same_set(i, j)) {
         this->maze->unite(this->maze->find(i), this->maze->find(j));
         // Update hex representation
         this->grid[i] &= mask_i;
@@ -146,7 +127,7 @@ void Maze::remove_wall(unsigned i, int j, uint8_t mask_i, uint8_t mask_j) {
  * @param i An index n the grid
  * @return The index to the left of `i`, -1 if out of bounds
 */
-inline int Maze::left_index(unsigned i) {
+inline int Maze::left(unsigned i) const {
     if (!(i % this->len)) return -1;
     return i - 1;
 }
@@ -157,7 +138,7 @@ inline int Maze::left_index(unsigned i) {
  * @param i An index n the grid
  * @return The index to the right of `i`, -1 if out of bounds
 */
-inline int Maze::right_index(unsigned i) {
+inline int Maze::right(unsigned i) const {
     if (!((i + 1) % this->len)) return -1;
     return i + 1;
 }
@@ -168,7 +149,7 @@ inline int Maze::right_index(unsigned i) {
  * @param i An index n the grid
  * @return The index above`i`, -1 if out of bounds
 */
-inline int Maze::up_index(unsigned i) {
+inline int Maze::up(unsigned i) const {
     if (i < this->len) return -1;
     return i - this->len;
 }
@@ -179,7 +160,7 @@ inline int Maze::up_index(unsigned i) {
  * @param i An index n the grid
  * @return The index below `i`, -1 if out of bounds
 */
-inline int Maze::down_index(unsigned i) {
+inline int Maze::down(unsigned i) const {
     if (i >= this->size - this->len) return -1;
     return i + this->len;
 }
