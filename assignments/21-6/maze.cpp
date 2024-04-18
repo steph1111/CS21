@@ -28,16 +28,6 @@ Maze::Maze(unsigned len) {
     this->maze = new DisjointSet(this->size);
     this->grid = new uint8_t[this->size];
     this->indexes = new unsigned[this->size];
-
-    // Initialize the starting configuration of the grid 
-    // and make a list of all valid indexes
-    for (unsigned i = 0; i < this->size; i++) {
-        this->grid[i] = 0xF; // Start all squares at 0xF, □
-        this->indexes[i] = i;
-    }
-    // First and last square are entry points
-    this->grid[0] = 0xB;
-    this->grid[this->size - 1] = 0xE;
 }
 
 /**
@@ -53,6 +43,17 @@ Maze::~Maze() {
  * Creates a randomized maze.
 */
 void Maze::create_maze() {
+    this->maze->clear();
+    // Initialize the starting configuration of the grid 
+    // and make a list of all valid indexes
+    for (unsigned i = 0; i < this->size; i++) {
+        this->grid[i] = 0xF; // Start all squares at 0xF, □
+        this->indexes[i] = i;
+    }
+    // First and last square are entry points
+    this->grid[0] = 0xB;
+    this->grid[this->size - 1] = 0xE;
+
     // Shuffle indexes
     this->shuffle_indexes();
 

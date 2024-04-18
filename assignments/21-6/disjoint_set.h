@@ -70,6 +70,11 @@ class DisjointSet {
     */
     bool same_set(int x, int y);
 
+    /**
+     * Clear contents of the set.
+    */
+    void clear();
+
     private:
     void link(int x, int y);
     unsigned num_elements;

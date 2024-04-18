@@ -96,6 +96,17 @@ bool DisjointSet::same_set(int x, int y) {
     return this->find(x) == this->find(y);
 }
 
+/**
+ * Clear contents of the set.
+*/
+void DisjointSet::clear() {
+    this->num_sets = this->num_elements;
+    for (unsigned i = 0; i < this->num_elements; i++) {
+        this->p[i] = i;  // Parent is itself
+        this->r[i] = 0;  // Ranks start at zero
+    }
+}
+
 // private:
 
 /**
