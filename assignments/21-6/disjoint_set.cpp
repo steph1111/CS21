@@ -96,7 +96,10 @@ unsigned DisjointSet::get_num_sets() const {
  * @return true of `x` and `y` are in the same set, otherwise false.
 */
 bool DisjointSet::same_set(int x, int y) {
-    return this->find(x) == this->find(y);
+    int x_parent = this->find(x);
+    int y_parent = this->find(y);
+    if (x_parent == -1 or y_parent == -1) return false;
+    return x_parent == y_parent;
 }
 
 /**
