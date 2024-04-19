@@ -9,8 +9,9 @@
  * Demonstrates functionality of the `Maze` class.
 */
 
-
+#include <cstdlib>
 #include <iostream>
+#include <time.h>
 #include "maze.h"
 
 int main(int argc, char** argv) {

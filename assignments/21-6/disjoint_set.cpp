@@ -40,7 +40,7 @@ DisjointSet::~DisjointSet() {
 }
 
 /**
- * Unites to disjoint sets with parents `x` and `y`.
+ * Unites two disjoint sets with parents `x` and `y`.
  * Because the sets must be disjoint, the union operation
  * destroys sets S_x and S_y removing them from the collection.
  * 
@@ -49,12 +49,14 @@ DisjointSet::~DisjointSet() {
  * bound of the height of the node. Union by rank makes the
  * root with a smaller rank point to the larger rank.
  * 
- * @param x, y Representative members of the sets to union.
+ * @param x, y Members of the sets to union.
  */
 void DisjointSet::unite(int x, int y) {
-    if (x == y) return; // If the representatives are the same, same set
-    this->link(x, y);
-    this->num_sets--;
+    // Bounds check
+    if (!this->same_set(x, y) && x >= 0 && x < (int)this->num_elements && 
+        y >= 0 && y < (int)this->num_elements) {
+        this->link(this->find(x), this->find(y));
+    }
 }
 
 /**
@@ -67,6 +69,7 @@ void DisjointSet::unite(int x, int y) {
  * @return The representative of the set.
 */
 int DisjointSet::find(int x) {
+    if (x < 0 || x >= (int)this->num_elements) return -1;
     if (this->p[x] == x) return x;
     this->p[x] = this->find(this->p[x]);
     return this->p[x]; 
@@ -128,4 +131,6 @@ void DisjointSet::link(int x, int y) {
             this->r[y]++;
         }
     }
+    // Sets are united, reduce count
+    this->num_sets--;
 }

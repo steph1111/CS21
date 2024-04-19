@@ -8,9 +8,6 @@
  * Definitions of methods of `Maze` class. The `Maze` class 
  * uses a `DisjointSet` to create a randomly generated maze.
 */
-
-#include <cstdlib>
-#include <time.h>
 #include "maze.h"
 
 // public: 
@@ -56,9 +53,12 @@ void Maze::create_maze() {
 
     // Shuffle indexes
     this->shuffle_indexes();
-
-    for (unsigned i = 0; i < this->size && this->maze->get_num_sets(); i++) {
+    
+    unsigned i = 0; 
+    while(this->maze->get_num_sets() > 1) {
         this->remove_walls(this->indexes[i]);
+        i++;
+        if (i == this->size) i = 0;
     }
 }
 
@@ -115,7 +115,7 @@ void Maze::remove_walls(unsigned i) {
 void Maze::remove_wall(unsigned i, int j, uint8_t mask_i, uint8_t mask_j) {
     // Ensures j is a valid index and the sets are not already united
     if (j > 0 && !this->maze->same_set(i, j)) {
-        this->maze->unite(this->maze->find(i), this->maze->find(j));
+        this->maze->unite(i, j);
         // Update hex representation
         this->grid[i] &= mask_i;
         this->grid[j] &= mask_j;
