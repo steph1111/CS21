@@ -14,12 +14,12 @@ bool BinarySearchTree::search(int key) const {
 
 int* BinarySearchTree::min() const {
     Node* temp = this->min(this->root);
-    return temp ? &temp->key : nullptr;
+    return temp ? (new int(temp->key)) : nullptr;
 }
 
 int* BinarySearchTree::max() const {
     Node* temp = this->max(this->root);
-    return temp ? &temp->key : nullptr;
+    return temp ? (new int(temp->key)) : nullptr;
 }
 
 void BinarySearchTree::insert(int key) {
@@ -161,12 +161,4 @@ void BinarySearchTree::preorder(Node* x, std::function<void(Node*)> func) {
     this->preorder(x->left, func);
     this->preorder(x->right, func);
 }
-
-// void BinarySearchTree::print_node(Node* node) {
-//     std::cout << node->key << " ";
-// }
-
-// void BinarySearchTree::delete_node(Node* node) {
-//     delete node;
-// }
 

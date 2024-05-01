@@ -27,8 +27,6 @@ class BinarySearchTree {
     void postorder(Node* x, std::function<void(Node*)> func);
     void preorder(Node* x, std::function<void(Node*)> func);
     void remove(Node* node);
-    void print_node(Node* node);
-    void delete_node(Node* node);
 
     struct Node {                                                               
         Node* left = nullptr;                                                   
