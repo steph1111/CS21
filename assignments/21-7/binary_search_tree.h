@@ -15,7 +15,7 @@ class BinarySearchTree {
     void insert(int val);
     int* successor(int key) const;
     int* predecessor(int key) const;
-    void remove(int key);
+    bool remove(int key);
 
     private:
     Node* search(Node* node, int key) const;
@@ -26,7 +26,7 @@ class BinarySearchTree {
     void inorder(Node* x, std::function<void(Node*)> func);
     void postorder(Node* x, std::function<void(Node*)> func);
     void preorder(Node* x, std::function<void(Node*)> func);
-    void remove(Node* node);
+    bool remove(Node* node);
 
     struct Node {                                                               
         Node* left = nullptr;                                                   

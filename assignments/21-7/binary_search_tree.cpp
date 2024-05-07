@@ -2,26 +2,53 @@
 #include "binary_search_tree.h"
 
 // public:
+/**
+ * Constructs an empty `BinarySearchTree` object.
+*/
 BinarySearchTree::BinarySearchTree() {}
 
+/**
+ * Destructor for `BinarySearchTree`. Cleans up allocated memory.
+*/
 BinarySearchTree::~BinarySearchTree() {
     this->postorder(this->root, [](Node* node) { delete node; });
 }
 
+/**
+ * Searches for a `key` value.
+ * 
+ * @param key Key value to search for.
+ * @return true if the `key` exists in the tree, otherwise false.
+*/
 bool BinarySearchTree::search(int key) const {
     return this->search(this->root, key) != nullptr;
 }
 
+/**
+ * Minimum element in the tree.
+ * 
+ * @return Minimum element in the tree, `nullptr` if the tree is empty.
+*/
 int* BinarySearchTree::min() const {
     Node* temp = this->min(this->root);
     return temp ? (new int(temp->key)) : nullptr;
 }
 
+/**
+ * Maximum element in the tree.
+ * 
+ * @return Maximum element in the tree, `nullptr` if the tree is empty.
+*/
 int* BinarySearchTree::max() const {
     Node* temp = this->max(this->root);
     return temp ? (new int(temp->key)) : nullptr;
 }
 
+/**
+ * Insert a value `key` into the tree.
+ * 
+ * @param key Value to insert.
+*/
 void BinarySearchTree::insert(int key) {
    Node* node = new Node;
    node->key = key;
@@ -46,21 +73,51 @@ void BinarySearchTree::insert(int key) {
    else prev->right = node;
 }
 
+/**
+ * Successor of `key`.
+ * 
+ * The successor of a node is defined as the node with the 
+ * smallest key greater than the input node.
+ * 
+ * @param key Key of the node to find the successor of
+ * @return The key of the node which has the smallest key
+ *         greater than `key`. `nullptr` if the tree is empty.
+*/
 int* BinarySearchTree::successor(int key) const {
     Node* temp = this->successor(this->search(this->root, key));
-    return temp ? &temp->key : nullptr;
+    return temp ? (new int(temp->key)) : nullptr;
 }
 
+/**
+ * Predecessor of `key`.
+ * 
+ * The predecessor of a node is defined as the node with the 
+ * largest key smaller than the input node.
+ * 
+ * @param key Key of the node to find the successor of
+ * @return The key of the node which has the largest key
+ *         smaller than `key`. `nullptr` if the tree is empty.
+*/
 int* BinarySearchTree::predecessor(int key) const {
-    Node* temp = this->successor(this->search(this->root, key));
-    return temp ? &temp->key : nullptr;
+    Node* temp = this->predecessor(this->search(this->root, key));
+    return temp ? (new int(temp->key)) : nullptr;
 }
 
-void BinarySearchTree::remove(int key) {
-    this->remove(this->search(this->root, key));
+/**
+ * Removes the node from the tree with key value `key`.
+ * 
+ * @param key Key of the node to remove.
+ * @return `true` if the removal was successful, otherwise `false`.
+*/
+bool BinarySearchTree::remove(int key) {
+    return this->remove(this->search(this->root, key));
 }
 
 // private:
+
+/**
+ * Search for a key from a start
+*/
 BinarySearchTree::Node* BinarySearchTree::search(Node* node, int key) const {
     if (node == nullptr || node->key == key) return node;
     if (key < node->key) return this->search(node->left, key);
@@ -107,9 +164,9 @@ BinarySearchTree::Node* BinarySearchTree::predecessor(Node* node) const {
     return temp;
 }
 
-void BinarySearchTree::remove(Node* node) {
+bool BinarySearchTree::remove(Node* node) {
     // If the node does not exist, do nothing
-    if (node == nullptr) return;
+    if (node == nullptr) return false;
     // Target is the node to be removed
     Node* target = node;
     if (node->left && node->right) {
@@ -139,6 +196,7 @@ void BinarySearchTree::remove(Node* node) {
         node = target;
     }
     delete target;
+    return true;
 }
 
 void BinarySearchTree::inorder(Node* x, std::function<void(Node*)> func) {
