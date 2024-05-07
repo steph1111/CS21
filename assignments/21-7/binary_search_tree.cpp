@@ -116,7 +116,10 @@ bool BinarySearchTree::remove(int key) {
 // private:
 
 /**
- * Search for a key from a start
+ * Search for a key from a start node
+ * 
+ * @param node Pointer to the node to start from
+ * @param key Key to search for
 */
 BinarySearchTree::Node* BinarySearchTree::search(Node* node, int key) const {
     if (node == nullptr || node->key == key) return node;
@@ -124,6 +127,11 @@ BinarySearchTree::Node* BinarySearchTree::search(Node* node, int key) const {
     else return this->search(node->right, key);
 }
 
+/**
+ * Minimum value in the tree from a starting node.
+ * 
+ * @param node Pointer to the node to start from.
+*/
 BinarySearchTree::Node* BinarySearchTree::min(Node* node) const {
     if (node == nullptr) return nullptr;
     while (node->left != nullptr) {
@@ -132,6 +140,11 @@ BinarySearchTree::Node* BinarySearchTree::min(Node* node) const {
     return node;
 }
 
+/**
+ * Maximum value in the tree from a starting node.
+ * 
+ * @param node Pointer to the node to start from.
+*/
 BinarySearchTree::Node* BinarySearchTree::max(Node* node) const {
     if (node == nullptr) return nullptr;
     while (node->right != nullptr) {
@@ -140,6 +153,11 @@ BinarySearchTree::Node* BinarySearchTree::max(Node* node) const {
     return node;
 }
 
+/**
+ * Successor of a `node`.
+ * 
+ * @param Node to find the successor of.
+*/
 BinarySearchTree::Node* BinarySearchTree::successor(Node* node) const {
     if (node == nullptr) return nullptr;
     if (node->right) return this->min(node->right);
@@ -152,6 +170,11 @@ BinarySearchTree::Node* BinarySearchTree::successor(Node* node) const {
     return temp;
 }
 
+/**
+ * Predecessor of a `node`.
+ * 
+ * @param node Node to find the predecessor of.
+*/
 BinarySearchTree::Node* BinarySearchTree::predecessor(Node* node) const {
     if (node == nullptr) return nullptr;
     if (node->left) return this->max(node->left);
@@ -164,6 +187,11 @@ BinarySearchTree::Node* BinarySearchTree::predecessor(Node* node) const {
     return temp;
 }
 
+/**
+ * Remove a node from the tree.
+ * 
+ * @param node Node to remove.
+*/
 bool BinarySearchTree::remove(Node* node) {
     // If the node does not exist, do nothing
     if (node == nullptr) return false;
@@ -199,6 +227,11 @@ bool BinarySearchTree::remove(Node* node) {
     return true;
 }
 
+/**
+ * Traverses the binary tree from a given start node `x` in order.
+ * 
+ * @param x Node to start from.
+*/
 void BinarySearchTree::inorder(Node* x, std::function<void(Node*)> func) {
     if (x == nullptr) return;
     this->inorder(x->left, func);
@@ -206,6 +239,11 @@ void BinarySearchTree::inorder(Node* x, std::function<void(Node*)> func) {
     this->inorder(x->right, func);
 }
 
+/**
+ * Traverses the binary tree from a given start node `x` in post order.
+ * 
+ * @param x Node to start from.
+*/
 void BinarySearchTree::postorder(Node* x, std::function<void(Node*)> func) {
     if (x == nullptr) return;
     this->postorder(x->left, func);
@@ -213,6 +251,11 @@ void BinarySearchTree::postorder(Node* x, std::function<void(Node*)> func) {
     func(x);
 }
 
+/**
+ * Traverses the binary tree from a given start node `x` in pre order.
+ * 
+ * @param x Node to start from.
+*/
 void BinarySearchTree::preorder(Node* x, std::function<void(Node*)> func) {
     if (x == nullptr) return;
     func(x);
