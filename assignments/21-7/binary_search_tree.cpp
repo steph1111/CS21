@@ -11,7 +11,11 @@ BinarySearchTree::BinarySearchTree() {}
  * Destructor for `BinarySearchTree`. Cleans up allocated memory.
 */
 BinarySearchTree::~BinarySearchTree() {
-    this->postorder(this->root, [](Node* node) { delete node; });
+    std::vector<Node*> nodes;
+    this->postorder(this->root, nodes);
+    for (unsigned i = 0; i < nodes.size(); i++) {
+        delete nodes[i];
+    }
 }
 
 /**
@@ -111,6 +115,51 @@ int* BinarySearchTree::predecessor(int key) const {
 */
 bool BinarySearchTree::remove(int key) {
     return this->remove(this->search(this->root, key));
+}
+
+/**
+ * Traverses the binary tree from the root in order.
+ * 
+ * @return A vector of ints containing the BST inorder.
+*/
+std::vector<int> BinarySearchTree::inorder() {
+    std::vector<Node*> nodes;
+    this->inorder(this->root, nodes);
+    std::vector<int> keys(nodes.size());
+    for (unsigned i = 0; i < nodes.size(); i++) {
+        keys[i] = nodes[i]->key;
+    }
+    return keys;
+}
+
+/**
+ * Traverses the binary tree from the root in postorder.
+ * 
+ * @return A vector of ints containing the BST in postorder.
+*/
+std::vector<int> BinarySearchTree::postorder() {
+    std::vector<Node*> nodes;
+    this->postorder(this->root, nodes);
+    std::vector<int> keys(nodes.size());
+    for (unsigned i = 0; i < nodes.size(); i++) {
+        keys[i] = nodes[i]->key;
+    }
+    return keys;
+}
+
+/**
+ * Traverses the binary tree from the root in preorder.
+ * 
+ * @return A vector of ints containing the BST in preorder.
+*/
+std::vector<int> BinarySearchTree::preorder() {
+    std::vector<Node*> nodes;
+    this->preorder(this->root, nodes);
+    std::vector<int> keys(nodes.size());
+    for (unsigned i = 0; i < nodes.size(); i++) {
+        keys[i] = nodes[i]->key;
+    }
+    return keys;
 }
 
 // private:
@@ -227,39 +276,45 @@ bool BinarySearchTree::remove(Node* node) {
     return true;
 }
 
-/**
+ /**
  * Traverses the binary tree from a given start node `x` in order.
+ * Stores the nodes in vector `nodes`.
  * 
  * @param x Node to start from.
+ * @param nodes Empty vector to store nodes in inorder traversal in.
 */
-void BinarySearchTree::inorder(Node* x, std::function<void(Node*)> func) {
+void BinarySearchTree::inorder(Node* x, std::vector<Node*>& nodes) {
     if (x == nullptr) return;
-    this->inorder(x->left, func);
-    func(x);
-    this->inorder(x->right, func);
+    this->inorder(x->left, nodes);
+    nodes.push_back(x);
+    this->inorder(x->right, nodes);
 }
 
 /**
  * Traverses the binary tree from a given start node `x` in post order.
+ * Stores the nodes in vector `nodes`.
  * 
  * @param x Node to start from.
+ * @param nodes Empty vector to store nodes in postorder traversal in.
 */
-void BinarySearchTree::postorder(Node* x, std::function<void(Node*)> func) {
+void BinarySearchTree::postorder(Node* x, std::vector<Node*>& nodes) {
     if (x == nullptr) return;
-    this->postorder(x->left, func);
-    this->postorder(x->right, func);
-    func(x);
+    this->postorder(x->left, nodes);
+    this->postorder(x->right, nodes);
+    nodes.push_back(x);
 }
 
 /**
  * Traverses the binary tree from a given start node `x` in pre order.
+ * Stores the nodes in vector `nodes`.
  * 
  * @param x Node to start from.
+ * @param nodes Empty vector to store nodes in preorder traversal in.
 */
-void BinarySearchTree::preorder(Node* x, std::function<void(Node*)> func) {
+void BinarySearchTree::preorder(Node* x, std::vector<Node*>& nodes) {
     if (x == nullptr) return;
-    func(x);
-    this->preorder(x->left, func);
-    this->preorder(x->right, func);
+    nodes.push_back(x);
+    this->preorder(x->left, nodes);
+    this->preorder(x->right, nodes);
 }
 

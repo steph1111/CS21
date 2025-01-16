@@ -1,7 +1,7 @@
 #ifndef BINARY_SEARCH_TREE_H
 #define BINARY_SEARCH_TREE_H
 
-#include <functional>
+#include <vector>
 
 class BinarySearchTree {
     // forward definition of Node
@@ -78,6 +78,27 @@ class BinarySearchTree {
     */
     bool remove(int key);
 
+    /**
+     * Traverses the binary tree from the root in order.
+     * 
+     * @return A vector of ints containing the BST inorder.
+    */
+    std::vector<int> inorder();
+
+    /**
+     * Traverses the binary tree from the root in postorder.
+     * 
+     * @return A vector of ints containing the BST in postorder.
+    */
+    std::vector<int> postorder();
+
+    /**
+     * Traverses the binary tree from the root in preorder.
+     * 
+     * @return A vector of ints containing the BST in preorder.
+    */
+    std::vector<int> preorder();
+
     private:
     /**
      * Search for a key from a start node
@@ -124,24 +145,30 @@ class BinarySearchTree {
 
     /**
      * Traverses the binary tree from a given start node `x` in order.
+     * Stores the nodes in vector `nodes`.
      * 
      * @param x Node to start from.
+     * @param nodes Empty vector to store nodes in inorder traversal in.
     */
-    void inorder(Node* x, std::function<void(Node*)> func);
+    void inorder(Node* x, std::vector<Node*>& nodes);
 
     /**
      * Traverses the binary tree from a given start node `x` in post order.
+     * Stores the nodes in vector `nodes`.
      * 
      * @param x Node to start from.
+     * @param nodes Empty vector to store nodes in postorder traversal in.
     */
-    void postorder(Node* x, std::function<void(Node*)> func);
+    void postorder(Node* x, std::vector<Node*>& nodes);
 
     /**
      * Traverses the binary tree from a given start node `x` in pre order.
+     * Stores the nodes in vector `nodes`.
      * 
      * @param x Node to start from.
+     * @param nodes Empty vector to store nodes in preorder traversal in.
     */
-    void preorder(Node* x, std::function<void(Node*)> func);
+    void preorder(Node* x, std::vector<Node*>& nodes);
    
 
     struct Node {                                                               
