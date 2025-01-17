@@ -1,4 +1,4 @@
-# Assignment 7: Breadth-First Search
+# Assignment 8: Breadth-First Search
 
 ## Program Description
 Reading in a graph (a nxn maze), use a BFS to find a shortest path from the start to the exit.
