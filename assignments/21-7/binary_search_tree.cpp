@@ -272,7 +272,7 @@ bool BinarySearchTree::remove(Node* node) {
             node->key = target->key;
         }
     }
-    delete target;git 
+    delete target;
     return true;
 }
 
