@@ -1,3 +1,14 @@
+/**
+ * @file    binary_search_tree.cpp
+ * @author  Stephanie L'Heureux (slheure)
+ * Email:   stephanielh1111@gmail.com
+ * @date    05/02/24
+ * CS21:    Assignment#7
+ * Status:  Working/tested
+ *
+ * Definitions of methods of `BinarySearchTree` class.
+*/
+
 #include "binary_search_tree.h"
 
 // public:

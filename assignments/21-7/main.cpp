@@ -4,7 +4,7 @@
  * Email:   stephanielh1111@gmail.com
  * @date    05/02/24
  * CS21:    Assignment#7
- * Status:  Untested
+ * Status:  Working/tested
  *
  * Demonstrates functionality of the `BinarySearchTree` class.
 */
@@ -14,6 +14,11 @@
 #include <sstream>
 #include "binary_search_tree.h"
 
+/**
+ * Prints contents of a vector where elements are separated by spaces.
+ * 
+ * @param keys Vector to print.
+ */
 void print_vector(const std::vector<int>& keys) {
     for (unsigned i = 0; i < keys.size(); i++) {
         std::cout << keys[i] << " ";
@@ -25,7 +30,8 @@ int main() {
     BinarySearchTree bst;
     std::string input, action;
     int num;
-    std::pair<std::string, std::string> split_input;
+
+    // For labeled cases    
     enum {
         search, min, max, insert, successor, predecessor, inorder, postorder, preorder, remove, comment
     };
