@@ -255,9 +255,11 @@ bool BinarySearchTree::remove(Node* node) {
     } else {
         temp = target->right;
     }
+
     if (temp) {
         temp->parent = target->parent;
     }
+
     if (target->parent == nullptr) {
         this->root = temp;
     } else {
@@ -266,12 +268,11 @@ bool BinarySearchTree::remove(Node* node) {
         } else {
             target->parent->right = temp;
         }
+        if (target != node) {
+            node->key = target->key;
+        }
     }
-    if (target != node) {
-        // copy target into node node
-        node = target;
-    }
-    delete target;
+    delete target;git 
     return true;
 }
 
