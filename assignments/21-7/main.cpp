@@ -32,8 +32,18 @@ int main() {
     int num;
 
     // For labeled cases    
-    enum {
-        search, min, max, insert, successor, predecessor, inorder, postorder, preorder, remove, comment
+    enum { 
+        search, 
+        min, 
+        max, 
+        insert, 
+        successor, 
+        predecessor, 
+        inorder, 
+        postorder, 
+        preorder, 
+        remove, 
+        comment 
     };
 
     std::unordered_map<std::string, int> choice_map {
